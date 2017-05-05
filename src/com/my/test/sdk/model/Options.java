@@ -1,15 +1,12 @@
 package com.my.test.sdk.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Options {
-    public List<String> channels = new ArrayList<>(0);
 
     private String applicationName;
     private String limitTargetSdkVersion;
     private String replaceScreenOrientation;
     private String launchMode;
+    private String replaceMainActivityIntentFilter;
     private String mainActivityAddIntentFilter;
 
     public String getApplicationName() {
@@ -50,5 +47,13 @@ public class Options {
 
     public void setMainActivityAddIntentFilter(String mainActivityAddIntentFilter) {
         this.mainActivityAddIntentFilter = mainActivityAddIntentFilter;
+    }
+
+    public String getReplaceMainActivityIntentFilter() {
+        return replaceMainActivityIntentFilter;
+    }
+
+    public void setReplaceMainActivityIntentFilter(String replaceMainActivityIntentFilter) {
+        this.replaceMainActivityIntentFilter = replaceMainActivityIntentFilter;
     }
 }

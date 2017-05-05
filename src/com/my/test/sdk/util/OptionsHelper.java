@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 public class OptionsHelper {
 
     private static final Logger log = Logger.getInstance(OptionsHelper.class);
-    private static final String subPath = "app" + File.separator + "src" + File.separator + "main" + File.separator + "assets";
+    private static final String subPath = "app" + File.separator + "src" + File.separator + "main" + File.separator + "assets" + File.separator + "sdkConfDir";
     private static final String saveFileName = "sdkPackageConfig.json";
 
     private static String getPathName(Project project) {
@@ -25,8 +25,26 @@ public class OptionsHelper {
             log.info("path=" + path);
             return path;
         } else {
+            if (new File(path).mkdirs()) {
+                log.info("目录 dir=" + path + " 创建成功");
+                return path;
+            } else {
+                log.info("目录 dir=" + path + " 创建失败");
+            }
             log.info("path=" + project.getBasePath());
             return project.getBasePath();
+        }
+    }
+
+    public static void mkDir(Project project, String dir) {
+        File file = new File(getPathName(project) + File.separator + dir);
+        if (file.exists()) {
+            return;
+        }
+        if (file.mkdir()) {
+            log.info("目录 dir=" + dir + " 创建成功");
+        } else {
+            log.info("目录 dir=" + dir + " 创建失败");
         }
     }
 
