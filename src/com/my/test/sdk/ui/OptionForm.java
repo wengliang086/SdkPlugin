@@ -29,7 +29,7 @@ public class OptionForm extends JFrame {
 
     public static OptionForm show(Project project) {
         OptionForm optionForm = new OptionForm(project);
-        optionForm.setSize(600, 450);
+        optionForm.setSize(600, 400);
         optionForm.setLocationRelativeTo(null);
         optionForm.setAlwaysOnTop(true);
         optionForm.setVisible(true);

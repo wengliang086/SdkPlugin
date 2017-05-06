@@ -30,8 +30,8 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="TestID" class="com.my.test.sdk.TestAction" text="testName" description="test description">
-      <add-to-group group-id="EditMenu" anchor="first"/>
+    <action id="TestID" class="com.my.test.sdk.TestAction" text="SdkChannelConfig" description="test description">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="alt T"/>
     </action>
   </actions>
