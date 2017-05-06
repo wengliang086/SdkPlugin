@@ -1,6 +1,7 @@
 package com.my.test.sdk.util;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.my.test.sdk.model.Options;
@@ -51,7 +52,8 @@ public class OptionsHelper {
     public static void save(Project project, Options options) {
         Path path = Paths.get(getPathName(project) + File.separator + saveFileName);
         try {
-            String json = new Gson().toJson(options);
+//            String json = new Gson().toJson(options);
+            String json = new GsonBuilder().setPrettyPrinting().create().toJson(options);
             Files.write(path, json.getBytes());
         } catch (IOException e) {
             e.printStackTrace();

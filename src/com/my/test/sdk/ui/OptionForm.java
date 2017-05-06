@@ -18,7 +18,7 @@ public class OptionForm extends JFrame {
     private JButton mBtnCancel;
     private JButton mBtnOk;
     private JTextField textApplicationName;
-    private JTextField textLimitTargetSdkVersion;
+    private JComboBox comboBoxLimitTargetSdkVersion;
     private JTextField textReplaceMainActivityIntentFilter;
     private JComboBox comboBoxLaunchMode;
     private JTextArea mainActivityAddIntentFilter;
@@ -76,7 +76,7 @@ public class OptionForm extends JFrame {
         radioButtonFalse.setSelected(true);
         if (options != null) {
             textApplicationName.setText(options.getApplicationName());
-            textLimitTargetSdkVersion.setText(options.getLimitTargetSdkVersion());
+            comboBoxLimitTargetSdkVersion.setSelectedItem(options.getLimitTargetSdkVersion());
             textReplaceMainActivityIntentFilter.setText(options.getReplaceMainActivityIntentFilter());
             mainActivityAddIntentFilter.setText(options.getMainActivityAddIntentFilter());
             comboBoxLaunchMode.setSelectedItem(options.getLaunchMode());
@@ -91,7 +91,7 @@ public class OptionForm extends JFrame {
         dispose();
 
         String applicationName = textApplicationName.getText();
-        String limitTargetSdkVersion = textLimitTargetSdkVersion.getText();
+        String limitTargetSdkVersion = (String) comboBoxLimitTargetSdkVersion.getSelectedItem();
         String replaceMainActivityIntentFilter = textReplaceMainActivityIntentFilter.getText();
         String mainActivityAddIntentFilterStr = mainActivityAddIntentFilter.getText();
         String launchMode = (String) comboBoxLaunchMode.getSelectedItem();
