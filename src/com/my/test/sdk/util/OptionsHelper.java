@@ -92,6 +92,11 @@ public class OptionsHelper {
                 e.printStackTrace();
             }
         }
-        return new Gson().fromJson(sb.toString(), Options.class);
+        try {
+            return new Gson().fromJson(sb.toString(), Options.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

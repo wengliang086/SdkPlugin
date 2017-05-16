@@ -1,10 +1,12 @@
 package com.my.test.sdk.ui;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
 import com.my.test.sdk.model.Options;
 import com.my.test.sdk.util.OptionsHelper;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 
 /**
@@ -26,10 +28,16 @@ public class OptionForm extends JFrame {
     private JRadioButton radioButtonFalse;
     private JButton btnMkdirAssets;
     private JButton btnMkdirRes;
+    private JTable tableCustomMap;
+    private JTable tableIntentFilter;
+    private JButton addIntentFilterButton;
+    private JButton removeIntentFilterButton;
+    private JButton addCustomMapButton;
+    private JButton removeCustomMapButton;
 
     public static OptionForm show(Project project) {
         OptionForm optionForm = new OptionForm(project);
-        optionForm.setSize(600, 400);
+        optionForm.setSize(600, 500);
         optionForm.setLocationRelativeTo(null);
         optionForm.setAlwaysOnTop(true);
         optionForm.setVisible(true);
@@ -65,6 +73,46 @@ public class OptionForm extends JFrame {
                 OptionsHelper.mkDir(project, "res");
             }
         });
+        addIntentFilterButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel) tableIntentFilter.getModel();
+                model.addRow(new Object[]{new ComboBox(new String[]{"aa", "bb", "cc"}), new ComboBox(new String[]{"aa", "bb", "cc"}), "cc"});
+            }
+        });
+        removeIntentFilterButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel) tableIntentFilter.getModel();
+                if (model.getRowCount() > 0) {
+                    if (tableIntentFilter.getSelectedRow() == -1) {
+                        model.removeRow(model.getRowCount() - 1);
+                    } else {
+                        model.removeRow(tableIntentFilter.getSelectedRow());
+                    }
+                }
+            }
+        });
+        addCustomMapButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel) tableCustomMap.getModel();
+                model.addRow(new String[]{"aa", "bb"});
+            }
+        });
+        removeCustomMapButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel) tableCustomMap.getModel();
+                if (model.getRowCount() > 0) {
+                    if (tableCustomMap.getSelectedRow() == -1) {
+                        model.removeRow(model.getRowCount() - 1);
+                    } else {
+                        model.removeRow(tableCustomMap.getSelectedRow());
+                    }
+                }
+            }
+        });
         RadioListener listener = new RadioListener();
         radioButtonTrue.setActionCommand("true");
         radioButtonFalse.setActionCommand("false");
@@ -77,21 +125,30 @@ public class OptionForm extends JFrame {
         if (options != null) {
             textApplicationName.setText(options.getApplicationName());
             comboBoxLimitTargetSdkVersion.setSelectedItem(options.getLimitTargetSdkVersion());
-            textReplaceMainActivityIntentFilter.setText(options.getReplaceMainActivityIntentFilter());
+//            textReplaceMainActivityIntentFilter.setText(options.getReplaceMainActivityIntentFilter());
             mainActivityAddIntentFilter.setText(options.getMainActivityAddIntentFilter());
             comboBoxLaunchMode.setSelectedItem(options.getLaunchMode());
-            String lm = options.getReplaceScreenOrientation();
-            if (lm != null && lm.equals("true")) {
-                radioButtonTrue.setSelected(true);
-            }
+            radioButtonTrue.setSelected(options.isReplaceScreenOrientation());
         }
+        DefaultTableModel model = (DefaultTableModel) tableIntentFilter.getModel();
+        model.setColumnIdentifiers(new String[]{"TagName", "AttributeName", "value"});
+        model.addRow(new Object[]{new ComboBox(new String[]{"aa", "bb", "cc"}), new ComboBox(new String[]{"aa", "bb", "cc"}), "cc"});
+        model.addRow(new Object[]{new ComboBox(new String[]{"aa", "bb", "cc"}), new ComboBox(new String[]{"aa", "bb", "cc"}), "cc"});
+        /**
+         * 自定义替换
+         */
+        DefaultTableModel tableModel = (DefaultTableModel) tableCustomMap.getModel();
+        tableModel.setColumnIdentifiers(new String[]{"要替换的值", "替换后的值"});
+        tableModel.addRow(new String[]{"aa", "bb"});
+        tableModel.addRow(new String[]{"aa", "bb"});
+        tableModel.addRow(new String[]{"aa", "bb"});
     }
 
     private void onOk() {
         dispose();
 
         String applicationName = textApplicationName.getText();
-        String limitTargetSdkVersion = (String) comboBoxLimitTargetSdkVersion.getSelectedItem();
+        int limitTargetSdkVersion = (int) comboBoxLimitTargetSdkVersion.getSelectedItem();
         String replaceMainActivityIntentFilter = textReplaceMainActivityIntentFilter.getText();
         String mainActivityAddIntentFilterStr = mainActivityAddIntentFilter.getText();
         String launchMode = (String) comboBoxLaunchMode.getSelectedItem();
@@ -99,7 +156,7 @@ public class OptionForm extends JFrame {
         Options options = new Options();
         options.setApplicationName(applicationName);
         options.setLimitTargetSdkVersion(limitTargetSdkVersion);
-        options.setReplaceMainActivityIntentFilter(replaceMainActivityIntentFilter);
+//        options.setReplaceMainActivityIntentFilter(replaceMainActivityIntentFilter);
         options.setMainActivityAddIntentFilter(mainActivityAddIntentFilterStr);
         options.setLaunchMode(launchMode);
         options.setReplaceScreenOrientation(replaceScreenOrientation);
@@ -107,13 +164,14 @@ public class OptionForm extends JFrame {
         OptionsHelper.save(mProject, options);
     }
 
-    private String replaceScreenOrientation = "false";
+    private boolean replaceScreenOrientation = false;
 
     private class RadioListener extends AbstractAction {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            replaceScreenOrientation = e.getActionCommand();
+            replaceScreenOrientation = e.getActionCommand().equals("true");
         }
     }
+
 }
