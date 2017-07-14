@@ -41,6 +41,7 @@ public class OptionForm extends JFrame {
     private JButton removeIntentFilterButton;
     private JButton addCustomMapButton;
     private JButton removeCustomMapButton;
+    private JCheckBox replaceSuperApplication;
 
     public static OptionForm show(Project project) {
         OptionForm optionForm = new OptionForm(project);
@@ -164,16 +165,15 @@ public class OptionForm extends JFrame {
         radioButtonFalse.setSelected(true);
         if (options != null) {
             textApplicationName.setText(options.getApplicationName());
-            comboBoxLimitTargetSdkVersion.setSelectedItem(options.getLimitTargetSdkVersion() > 0 ? options.getLimitTargetSdkVersion() : "不限制");
+            comboBoxLimitTargetSdkVersion.setSelectedItem(options.getLimitTargetSdkVersion() > 0 ? options.getLimitTargetSdkVersion() + "" : "不限制");
             mainActivityAddIntentFilter.setText(options.getMainActivityAddIntentFilter());
             comboBoxLaunchMode.setSelectedItem(options.getLaunchMode());
             radioButtonTrue.setSelected(options.isReplaceScreenOrientation());
+            replaceSuperApplication.setSelected(options.isReplaceSuperApplication());
             List<String[]> filters = options.getReplaceMainActivityIntentFilter();
             if (filters != null) {
                 for (String[] array : filters) {
                     model.addRow(array);
-//                    model.addRow(new Object[]{"category", "android:name", "aa"});
-//                    model.addRow(new Object[]{"action", "android:name", "bb"});
                 }
             }
             Map<String, String> map = options.getCustomReplaceMap();
@@ -191,14 +191,16 @@ public class OptionForm extends JFrame {
         String applicationName = textApplicationName.getText();
         int limitTargetSdkVersion = 0;
         try {
-            limitTargetSdkVersion = (int) comboBoxLimitTargetSdkVersion.getSelectedItem();
+            limitTargetSdkVersion = Integer.parseInt(comboBoxLimitTargetSdkVersion.getSelectedItem().toString());
         } catch (Exception e) {
+            e.printStackTrace();
         }
         String mainActivityAddIntentFilterStr = mainActivityAddIntentFilter.getText();
         String launchMode = (String) comboBoxLaunchMode.getSelectedItem();
 
         Options options = new Options();
         options.setApplicationName(applicationName);
+        options.setReplaceSuperApplication(replaceSuperApplication.isSelected());
         options.setLimitTargetSdkVersion(limitTargetSdkVersion);
         options.setMainActivityAddIntentFilter(mainActivityAddIntentFilterStr);
         options.setLaunchMode(launchMode);

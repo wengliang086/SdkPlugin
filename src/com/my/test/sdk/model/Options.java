@@ -6,6 +6,7 @@ import java.util.Map;
 public class Options {
 
     private String applicationName;
+    private boolean replaceSuperApplication;
     private int limitTargetSdkVersion;
     private boolean replaceScreenOrientation;
     private String launchMode;
@@ -67,5 +68,13 @@ public class Options {
 
     public void setCustomReplaceMap(Map<String, String> customReplaceMap) {
         this.customReplaceMap = customReplaceMap;
+    }
+
+    public boolean isReplaceSuperApplication() {
+        return replaceSuperApplication;
+    }
+
+    public void setReplaceSuperApplication(boolean replaceSuperApplication) {
+        this.replaceSuperApplication = replaceSuperApplication;
     }
 }
